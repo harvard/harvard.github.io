@@ -4,4 +4,5 @@
    gem "jekyll-optional-front-matter"
    gem "jekyll-readme-index"
    gem "jekyll-theme-primer"
+   gem "jekyll-titles-from-headings"
  end
