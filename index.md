@@ -1,18 +1,28 @@
 # Repositories
+{:.no_toc}
+
+* TOC
+{:toc}
 
 ## GitHub
 
-{% for row in site.data.github %}
-{% assign repo = row.repo | get %}
+{% assign tuples = site.data.github | get %}
 
-{% if repo %}
+{% for tuple in tuples %}
 
-### {{ repo.full_name }}
+{% assign user = tuple[0] %}
+{% assign repos = tuple[1] %}
+
+### {% if user.name %}{{ user.name }}{% else %}{{ user.login }}{% endif %}
+
+{% for repo in repos %}
+
+#### {{ repo.full_name }}
 
 {{ repo.description }}
-
+ 
 [{{ repo.html_url }}]({{ repo.html_url }})
 
-{% endif %}
+{% endfor %}
 
 {% endfor %}
