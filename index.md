@@ -1,9 +1,6 @@
 # Repositories
 {:.no_toc}
 
-* TOC
-{:toc}
-
 ## GitHub
 
 {% assign tuples = site.data.github | get %}

@@ -4,11 +4,16 @@ require "open-uri"
 module Jekyll
   module GetFilter
 
+    # Tuples with owners and respositories
+    @@tuples = {}
+
     # Get API responses
     def get(rows)
 
-      # Tuples to be returned
-      tuples = {}
+      # If memoized
+      if not @@tuples.empty?
+        return @@tuples.values
+      end
 
       # For each row in sorted order
       rows.sort_by { |row| row["repo"].downcase }.each do |row|
@@ -20,7 +25,7 @@ module Jekyll
           login, name = $1, $2
 
           # If we've not yet seen this login
-          if not tuples.key?(login)
+          if not @@tuples.key?(login)
 
             # GET https://api.github.com/users/:login
             begin
@@ -29,7 +34,7 @@ module Jekyll
               print "Fetching #{url}... "
               response = JSON.parse(open(url).read)
               print "200 OK\n"
-              tuples[login] = response, []  # Tuple for this owner and its repos
+              @@tuples[login] = response, []  # Tuple for this owner and its repos
             rescue => e
               print "#{e}\n"
               next
@@ -41,7 +46,7 @@ module Jekyll
             print "Fetching #{url}... "
             response = JSON.parse(open(url).read)
             print "200 OK\n"
-            tuples[login][1].push(response)  # Another repo for this owner
+            @@tuples[login][1].push(response)  # Another repo for this owner
           rescue => e
             print "#{e}\n"
           end
@@ -49,7 +54,7 @@ module Jekyll
           print "Ignoring #{repo}.\n"
         end
       end
-      tuples.values  # Return tuples
+      @@tuples.values  # Return tuples
     end
   end
 end
