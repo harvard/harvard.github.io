@@ -15,14 +15,11 @@ jobs:
     - name: Deploy
       run: |
         sudo chown -R $(whoami):$(whoami) .
-        MESSAGE="$(git log --oneline --format=%B -n1 | head -n1)"
         cp -r _site /tmp
         git checkout master
-        rm -rf * .github
+        rm -rf *
         mv /tmp/_site/* .
-        git config --global user.name "$GITHUB_ACTOR"
-        git config --global user.email "TODO"
         git add --all --force
-        git commit --allow-empty --message "$MESSAGE"
+        git commit --allow-empty-message --author "" --message ""
         git remote set-url origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY"
         git push --force origin master
