@@ -1,0 +1,5 @@
+optional_front_matter:
+  remove_originals: true
+safe: false
+theme: "jekyll-theme-primer"
+title: "Open Source at Harvard"

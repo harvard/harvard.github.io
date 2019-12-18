@@ -1,0 +1,29 @@
+name: Build and deploy
+on:
+  push:
+    branches: develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      uses: docker://jekyll/jekyll
+      with:
+        entrypoint: bash
+        args:  -c "/usr/local/bin/bundle install && /usr/local/bin/bundle exec jekyll build"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GTIHUB_TOKEN }}
+    - name: Deploy
+      run: |
+        sudo chown -R $(whoami):$(whoami) .
+        git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+        git config --global user.name "$GITHUB_ACTOR"
+        cp -r _site /tmp
+        git checkout master
+        rm -rf *
+        mv /tmp/_site/* .
+        git add --all --force
+        git commit --allow-empty-message --message "$(git log $(git rev-parse origin/develop) --oneline --format=%B -n1 | head -n1)"
+        git remote set-url origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY"
+        git push --force origin master
