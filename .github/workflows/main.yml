@@ -20,6 +20,6 @@ jobs:
         rm -rf *
         mv /tmp/_site/* .
         git add --all --force
-        git commit --allow-empty-message --author "" --message ""
+        git commit --allow-empty-message --author "" --message "$(git log --oneline --format=%B -n1 | head -n1)"
         git remote set-url origin "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY"
         git push --force origin master
