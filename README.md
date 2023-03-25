@@ -2,7 +2,7 @@
 
 ## Contributing
 
-Open a pull request, adding your repo's URL to [_data/github.tsv](_data/github.tsv).
+Open a pull request, adding your repo's URL to https://github.com/IQSS/open-source-at-harvard/blob/master/github.tsv which will be copied over to [_data/github.tsv](_data/github.tsv).
 
 ## Developing
 
